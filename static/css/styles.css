@@ -1,6 +1,7 @@
 body {
     margin: 20px;
     background: darkslategrey;
+    color: black;
 }
 
 .link-to-page {
@@ -11,3 +12,4 @@ body {
 #div_id_deadline div {
     display: flex;
 }
+
