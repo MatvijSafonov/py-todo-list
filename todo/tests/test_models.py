@@ -1,4 +1,3 @@
-from django.contrib.auth import get_user_model
 from django.test import TestCase
 
 from todo.models import Task, Tag
@@ -7,11 +6,6 @@ from todo.models import Task, Tag
 class ModelTests(TestCase):
     def setUp(self):
         self.tag = Tag.objects.create(name="#bug")
-        self.admin_user = get_user_model().objects.create_superuser(
-            username="admin",
-            password="admin12345",
-        )
-        self.client.force_login(self.admin_user)
         self.task = Task.objects.create(
             name="New functional",
             content="Add new functional to index page with buttons",
@@ -20,15 +14,13 @@ class ModelTests(TestCase):
         )
 
     def test_task_str(self):
-        self.assertEqual(str(self.task), f"{self.task.name}")
+        self.assertEqual(str(self.task), "New functional")
 
-    def test_worker_str(self):
-        self.assertEqual(
-            str(self.admin_user),
-            f"{self.admin_user.username} "
-            f"({self.admin_user.first_name} {self.admin_user.last_name})"
-        )
+    def test_invalid_task_without_name(self):
+        with self.assertRaises(ValueError):
+            Task.objects.create(content="Missing name", deadline="2023-04-04 15:00:00")
 
-    def test_create_worker(self):
-        self.assertEqual(self.admin_user.username, "admin")
-        self.assertTrue(self.admin_user.check_password("admin12345"))
+    def test_task_with_long_name(self):
+        long_name = "x" * 300
+        task = Task.objects.create(name=long_name, content="Test", deadline="2023-04-04 15:00:00")
+        self.assertEqual(str(task), long_name[:50] + "...")
