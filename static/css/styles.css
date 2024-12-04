@@ -1,0 +1,19 @@
+body {
+    margin: 20px;
+    background: darkslategrey;
+    color: black;
+}
+
+.link-to-page {
+    float: right;
+    margin: 0 2px 0 2px;
+}
+
+#div_id_deadline div {
+    display: flex;
+}
+
+p, li, td, th {
+    background-color:whitesmoke;
+    color: black;
+}
